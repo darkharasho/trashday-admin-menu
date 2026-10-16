@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a3f44"/>
+      <stop offset="1" stop-color="#1c1f22"/>
+    </linearGradient>
+    <linearGradient id="can" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3f8f4a"/>
+      <stop offset="0.5" stop-color="#5cb866"/>
+      <stop offset="1" stop-color="#2f6e38"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe08a"/>
+      <stop offset="1" stop-color="#d9a92e"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="28" fill="url(#bg)"/>
+  <rect x="62" y="58" width="132" height="20" rx="6" fill="#2f6e38"/>
+  <rect x="108" y="44" width="40" height="16" rx="5" fill="#2f6e38"/>
+  <path d="M72 84 H184 L172 214 Q170 224 160 224 H96 Q86 224 84 214 Z" fill="url(#can)"/>
+  <g stroke="#2a5f31" stroke-width="6" stroke-linecap="round">
+    <line x1="104" y1="104" x2="108" y2="204"/>
+    <line x1="128" y1="104" x2="128" y2="204"/>
+    <line x1="152" y1="104" x2="148" y2="204"/>
+  </g>
+  <g transform="rotate(-40 128 140)">
+    <rect x="120" y="70" width="16" height="130" rx="8" fill="url(#gold)" stroke="#5a4310" stroke-width="3"/>
+    <path d="M128 40 a26 26 0 1 0 0.1 0 Z M118 40 h20 v24 h-20 Z" fill="url(#gold)" fill-rule="evenodd" stroke="#5a4310" stroke-width="3"/>
+  </g>
+</svg>
