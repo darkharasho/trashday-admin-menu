@@ -9,7 +9,7 @@ namespace AdminMenu
         HostOnly,
         /// <summary>No local player (main menu, loading): do nothing.</summary>
         NotInLevel,
-        /// <summary>A game menu such as pause is open: do nothing.</summary>
+        /// <summary>A game menu such as pause, or the developer console, is open: do nothing.</summary>
         GameMenuOpen,
     }
 
@@ -19,7 +19,7 @@ namespace AdminMenu
     /// </summary>
     internal static class MenuGate
     {
-        public static ToggleDecision Decide(bool menuOpen, bool isServer, bool hasLocalPlayer, bool gameMenuOpen)
+        public static ToggleDecision Decide(bool menuOpen, bool isServer, bool hasLocalPlayer, bool gameMenuOpen, bool consoleOpen)
         {
             if (menuOpen)
                 return ToggleDecision.Close;
@@ -27,7 +27,7 @@ namespace AdminMenu
                 return ToggleDecision.NotInLevel;
             if (!isServer)
                 return ToggleDecision.HostOnly;
-            if (gameMenuOpen)
+            if (gameMenuOpen || consoleOpen)
                 return ToggleDecision.GameMenuOpen;
             return ToggleDecision.Open;
         }
@@ -37,8 +37,17 @@ namespace AdminMenu
 
         public static bool ShouldAutoClose(bool isServer, bool hasLocalPlayer) => !isServer || !hasLocalPlayer;
 
-        /// <summary>Mirrors the game's console: gameplay input comes back only if no game menu wants it off.</summary>
-        public static bool ShouldEnableGameInput(bool gameMenuVisible) => !gameMenuVisible;
+        /// <summary>
+        /// Mirrors the game's console: gameplay input comes back only if no game menu wants it off. The console turns
+        /// input off itself and doesn't show up as a game menu, so it's checked separately.
+        /// </summary>
+        public static bool ShouldEnableGameInput(bool gameMenuVisible, bool consoleOpen) => !gameMenuVisible && !consoleOpen;
+
+        /// <summary>
+        /// Only clear the game's menu suppression if this menu set it, and never under an open console that relies on it
+        /// to keep Esc from opening the pause menu.
+        /// </summary>
+        public static bool ShouldClearMenuSuppression(bool suppressedByUs, bool consoleOpen) => suppressedByUs && !consoleOpen;
 
         /// <summary>A game menu that opened over ours needs the free cursor it already has.</summary>
         public static bool ShouldLockCursor(bool gameMenuOpen) => !gameMenuOpen;

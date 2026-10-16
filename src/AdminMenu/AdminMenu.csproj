@@ -45,6 +45,7 @@
     <Reference Include="UnityEngine.PhysicsModule" HintPath="$(ManagedPath)/UnityEngine.PhysicsModule.dll" Private="false" />
     <Reference Include="Unity.InputSystem" HintPath="$(ManagedPath)/Unity.InputSystem.dll" Private="false" />
     <Reference Include="Unity.Netcode.Runtime" HintPath="$(ManagedPath)/Unity.Netcode.Runtime.dll" Private="false" />
+    <Reference Include="QFSW.QC" HintPath="$(ManagedPath)/QFSW.QC.dll" Private="false" />
   </ItemGroup>
 
   <Target Name="DeployToProfile" AfterTargets="Build" Condition="Exists('$(ProfilePath)/BepInEx/plugins')">

@@ -11,6 +11,8 @@ Host a lobby (ideally with a second client) with the mod deployed. Tick each lin
 - [ ] The Close button closes it.
 - [ ] As a client (second instance), F1 shows "Admin menu: host only" and nothing opens.
 - [ ] Open the menu, then leave to the main menu: the menu is gone and the main menu cursor works.
+- [ ] The window draws over the HUD with readable text, and the search box takes typed text (W/A/S/D don't move focus or the player).
+- [ ] Launched with `-console`: F1 does nothing while the console is open; closing the admin menu doesn't make console typing move the player.
 
 ## Players
 - [ ] Both players are listed; the host is first, marked "(you)".

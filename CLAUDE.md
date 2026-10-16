@@ -1,6 +1,6 @@
 ## Project Context
 
-A BepInEx/Harmony mod for Trash Day (Off by One Games, Steam app 3314580, Unity 6000.3 Mono, Netcode for GameObjects, Input System) that adds a host-only admin menu on F1. The window is UI Toolkit in its own `UIDocument`, with panel settings cloned from a game document. While open it takes input the way the game's console does (`Trash.ConsoleMenuHider`): `InputSystem.actions` off, `MenuSceneManager.MenusSuppressed` on (that's what keeps Esc from opening the pause menu), plus a `PlayerCamera.LookInputBlocks` request and a free cursor. Packaged for Thunderstore under `darkharasho`.
+A BepInEx/Harmony mod for Trash Day (Off by One Games, Steam app 3314580, Unity 6000.3 Mono, Netcode for GameObjects, Input System) that adds a host-only admin menu on F1. The window is UI Toolkit in its own `UIDocument`, with fresh screen-overlay panel settings that borrow the theme, fonts and scaling of a game document (the toast's, preferably). While open it takes input the way the game's console does (`Trash.ConsoleMenuHider`): `InputSystem.actions` off, `MenuSceneManager.MenusSuppressed` on (that's what keeps Esc from opening the pause menu), plus a `PlayerCamera.LookInputBlocks` request and a free cursor. Packaged for Thunderstore under `darkharasho`.
 
 ## Layout
 

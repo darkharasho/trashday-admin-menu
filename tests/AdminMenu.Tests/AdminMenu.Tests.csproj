@@ -12,6 +12,7 @@
     <Compile Include="../../src/AdminMenu/MenuGate.cs" Link="MenuGate.cs" />
     <Compile Include="../../src/AdminMenu/ItemSearch.cs" Link="ItemSearch.cs" />
     <Compile Include="../../src/AdminMenu/Amounts.cs" Link="Amounts.cs" />
+    <Compile Include="../../src/AdminMenu/PanelSource.cs" Link="PanelSource.cs" />
   </ItemGroup>
 
   <ItemGroup>

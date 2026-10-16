@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Ox1;
+using QFSW.QC;
 using Trash;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -84,7 +87,7 @@ namespace AdminMenu
 
         private void Toggle()
         {
-            var decision = MenuGate.Decide(_open, GameActions.IsServer, GameActions.LocalPlayer() != null, MenuSceneManager.IsMenuOpen);
+            var decision = MenuGate.Decide(_open, GameActions.IsServer, GameActions.LocalPlayer() != null, MenuSceneManager.IsMenuOpen, ConsoleOpen());
             switch (decision)
             {
                 case ToggleDecision.Open:
@@ -129,7 +132,7 @@ namespace AdminMenu
             _panel?.Close();
 
             PlayerCamera.LookInputBlocks.SetRequest(this, false);
-            if (MenuGate.ShouldEnableGameInput(MenuSceneManager.AnyMenuVisible.Value))
+            if (MenuGate.ShouldEnableGameInput(MenuSceneManager.AnyMenuVisible.Value, ConsoleOpen()))
                 InputSystem.actions?.Enable();
             if (reason != CloseReason.Lost && MenuGate.ShouldLockCursor(MenuSceneManager.IsMenuOpen))
                 Cursor.lockState = CursorLockMode.Locked;
@@ -153,15 +156,39 @@ namespace AdminMenu
         private void ReleaseSuppression()
         {
             _holdSuppressionUntilEscReleased = false;
-            if (!_suppressedMenus)
-                return;
+            // A console opened over the menu now owns the suppression and clears it when it closes.
+            if (MenuGate.ShouldClearMenuSuppression(_suppressedMenus, ConsoleOpen()))
+                MenuSceneManager.MenusSuppressed = false;
             _suppressedMenus = false;
-            MenuSceneManager.MenusSuppressed = false;
         }
 
         /// <summary>
-        /// Builds the window once, in its own UIDocument that survives scene loads. Its PanelSettings are a copy of a
-        /// game document's, so the game's theme and fonts carry over, drawn above everything else.
+        /// Whether the game's developer console (launched with -console) is open. It turns gameplay input off and
+        /// suppresses menus itself, so closing the admin menu must leave both alone while it's open.
+        /// </summary>
+        private static bool ConsoleOpen()
+        {
+            try
+            {
+                return ConsoleOpenCore();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        // Separate and non-inlined so a missing console assembly fails inside ConsoleOpen's try.
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static bool ConsoleOpenCore()
+        {
+            var console = QuantumConsole.Instance;
+            return console != null && console.IsActive;
+        }
+
+        /// <summary>
+        /// Builds the window once, in its own UIDocument that survives scene loads. Its PanelSettings are new screen-overlay
+        /// settings carrying a game document's theme, fonts and scaling, drawn above everything else.
         /// </summary>
         private bool EnsurePanel()
         {
@@ -199,19 +226,57 @@ namespace AdminMenu
             return _panel.Root.panel != null;
         }
 
+        /// <summary>
+        /// Fresh settings rather than a copy, so a world-space or screen-clearing source panel can't carry over. Only
+        /// the look (theme, fonts) and scaling are borrowed, preferably from the toast document (see <see cref="PanelSource"/>).
+        /// </summary>
         private static PanelSettings CreatePanelSettings()
         {
+            var documents = new List<UIDocument>();
+            UIDocument toastDocument = null;
+            if (ToastUI.Instance.TryGet(out var toast) && toast != null)
+            {
+                toastDocument = toast.GetComponentInChildren<UIDocument>(true);
+                if (toastDocument != null)
+                    documents.Add(toastDocument);
+            }
             foreach (var document in FindObjectsByType<UIDocument>(FindObjectsSortMode.None))
             {
-                var source = document != null ? document.panelSettings : null;
-                if (source == null || source.targetTexture != null || source.themeStyleSheet == null)
-                    continue;
-                var settings = Instantiate(source);
-                settings.name = "AdminMenuPanelSettings";
-                settings.sortingOrder = 10000f;
-                return settings;
+                if (document != null && document != toastDocument)
+                    documents.Add(document);
             }
-            return null;
+
+            var candidates = new List<PanelCandidate>();
+            foreach (var document in documents)
+            {
+                var source = document.panelSettings;
+                candidates.Add(new PanelCandidate
+                {
+                    IsToast = document == toastDocument,
+                    HasTheme = source != null && source.themeStyleSheet != null,
+                    HasTargetTexture = source != null && source.targetTexture != null,
+                });
+            }
+            var index = PanelSource.Pick(candidates);
+            if (index < 0)
+                return null;
+
+            var from = documents[index].panelSettings;
+            var settings = ScriptableObject.CreateInstance<PanelSettings>();
+            settings.name = "AdminMenuPanelSettings";
+            settings.themeStyleSheet = from.themeStyleSheet;
+            settings.textSettings = from.textSettings;
+            settings.scaleMode = from.scaleMode;
+            settings.referenceResolution = from.referenceResolution;
+            settings.screenMatchMode = from.screenMatchMode;
+            settings.match = from.match;
+            settings.scale = from.scale;
+            settings.referenceDpi = from.referenceDpi;
+            settings.fallbackDpi = from.fallbackDpi;
+            settings.clearColor = false;
+            settings.clearDepthStencil = false;
+            settings.sortingOrder = 10000f;
+            return settings;
         }
     }
 }
