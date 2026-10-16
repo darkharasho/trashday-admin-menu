@@ -58,6 +58,12 @@ namespace AdminMenu
                 _harmony.UnpatchSelf();
             }
 
+            // Its own object, so it outlives scene loads and doesn't depend on BepInEx's manager object staying alive.
+            var host = new GameObject("AdminMenu");
+            DontDestroyOnLoad(host);
+            host.hideFlags = HideFlags.HideAndDontSave;
+            host.AddComponent<AdminMenuController>();
+
             Log.LogInfo($"{PluginName} {PluginVersion} loaded; press {ToggleKey.Value} while hosting to open the admin menu");
         }
 
