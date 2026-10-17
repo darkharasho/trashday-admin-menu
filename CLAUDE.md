@@ -11,7 +11,7 @@ A BepInEx/Harmony mod for Trash Day (Off by One Games, Steam app 3314580, Unity 
 - `src/AdminMenu/MenuGate.cs`, `ItemSearch.cs`, `Amounts.cs`: pure logic, tested by `tests/AdminMenu.Tests`
 - `src/AdminMenu/Patches/InvinciblePatches.cs`: invincibility prefixes
 - `scripts/package.sh` builds the Thunderstore zip; `scripts/update-refs.sh` regenerates `lib/refs` for CI
-- Release: bump the version in `Plugin.cs`, the csproj, `thunderstore/manifest.json` and `CHANGELOG.md`, then push tag `v<version>`
+- Release: bump the version in `Plugin.cs`, the csproj, `thunderstore/manifest.json` and `CHANGELOG.md`, then push tag `v<version>` (Thunderstore and GitHub), or `v<version>-<suffix>` such as `v0.1.0-beta.1` for a GitHub-only prerelease
 
 ## Notes
 
