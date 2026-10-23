@@ -12,7 +12,7 @@ namespace AdminMenu
     {
         public const string PluginGuid = "com.darkharasho.trashday.adminmenu";
         public const string PluginName = "AdminMenu";
-        public const string PluginVersion = "0.1.0";
+        public const string PluginVersion = "0.1.1";
 
         internal static ManualLogSource Log;
         internal static ConfigEntry<KeyboardShortcut> ToggleKey;

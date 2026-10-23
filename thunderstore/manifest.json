@@ -1,6 +1,6 @@
 {
-    "name": "AdminMenu",
-    "version_number": "0.1.0",
+    "name": "TrashDayAdminMenu",
+    "version_number": "0.1.1",
     "website_url": "https://github.com/darkharasho/trashday-admin-menu",
     "description": "Host-only admin menu for Trash Day (F1): revive, heal, kill and teleport players, spawn items and money, fix the cart, skip checkpoints, invincibility.",
     "dependencies": [

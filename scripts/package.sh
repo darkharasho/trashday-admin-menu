@@ -32,7 +32,7 @@ if errors:
 print(v)
 PY
 )"
-zipfile="$root/dist/darkharasho-AdminMenu-$version.zip"
+zipfile="$root/dist/darkharasho-TrashDayAdminMenu-$version.zip"
 
 dotnet build "$root/src/AdminMenu/AdminMenu.csproj" -c Release
 

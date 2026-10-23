@@ -7,7 +7,7 @@ A host-only admin menu for [Trash Day](https://store.steampowered.com/app/331458
 - Install BepInEx 5 into the game folder, then run `dotnet build src/AdminMenu/AdminMenu.csproj -c Release`. The build deploys the DLL to `BepInEx/plugins/darkharasho-AdminMenu/`.
 - Without the game installed, the build uses the reference assemblies in `lib/refs` (regenerate with `scripts/update-refs.sh`).
 - Tests: `dotnet test tests/AdminMenu.Tests`.
-- Package: `scripts/package.sh` writes `dist/darkharasho-AdminMenu-<version>.zip`.
+- Package: `scripts/package.sh` writes `dist/darkharasho-TrashDayAdminMenu-<version>.zip`.
 
 ## Releasing
 
